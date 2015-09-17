@@ -2,6 +2,7 @@
 
 client = require '../connection/client'
 notifications = require '../ui/notifications'
+modules = require '../modules'
 
 module.exports =
   activate: ->
@@ -41,9 +42,10 @@ module.exports =
 
   eval: (ed) ->
     if ed.getText()
+      mod = modules.currentModule()
       client.start()
       @c.done()
-      client.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name}, (result) =>
+      client.msg 'eval-repl', {code: ed.getText(), mode: ed.inkConsoleMode?.name, module: mod}, (result) =>
         @c.input()
         notifications.show "Evaluation Finished"
 
